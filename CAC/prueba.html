@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido de Café</title>
+</head>
+<body>
+    <form id="pedido">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre"> <br><br>
+        
+        <label>
+            <input type="checkbox" name="opciones" value="Cafe" class="opcion"> Cafe
+            <input type="number" name="cantidad" placeholder="Cantidad" class="cantidad" style="display:none;">
+        </label><br>
+        
+        <label>
+            <input type="checkbox" name="opciones" value="Medialuna" class="opcion"> Medialuna
+            <input type="number" name="cantidad" placeholder="Cantidad" class="cantidad" style="display:none;">
+        </label><br>
+        
+        <label>
+            <input type="checkbox" name="opciones" value="Tostado" class="opcion"> Tostado
+            <input type="number" name="cantidad" placeholder="Cantidad" class="cantidad" style="display:none;">
+        </label><br>
+        
+        <label>
+            <input type="checkbox" name="opciones" value="Bizcochos" class="opcion"> Bizcochos
+            <input type="number" name="cantidad" placeholder="Cantidad" class="cantidad" style="display:none;">
+        </label><br><br>
+
+        <button type="button" id="boton">Enviar pedido</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var nombreInput = document.getElementById("nombre");
+            var checkboxes = document.querySelectorAll('input[name="opciones"]');
+            var cantidadInputs = document.querySelectorAll('.cantidad');
+            var botonEnviar = document.getElementById("boton");
+
+            checkboxes.forEach(function(checkbox, index) {
+                checkbox.addEventListener("change", function() {
+                    if (checkbox.checked) {
+                        cantidadInputs[index].style.display = "block";
+                    } else {
+                        cantidadInputs[index].style.display = "none";
+                    }
+                });
+            });
+
+            botonEnviar.addEventListener("click", function() {
+                var nombre = nombreInput.value;
+                var opcionesSeleccionadas = [];
+
+                checkboxes.forEach(function(checkbox, index) {
+                    if (checkbox.checked) {
+                        var cantidad = cantidadInputs[index].value || 1; // Si no se ingresa cantidad, se asume 1
+                        opcionesSeleccionadas.push(`${cantidad}x ${checkbox.value}`);
+                    }
+                });
+
+                if (nombre && opcionesSeleccionadas.length > 0) {
+                    var mensaje = `Hola! Pedido de ${nombre}: ${opcionesSeleccionadas.join(", ")}. Precio final: x. Forma de pago: x`;
+                    var telefono = "5493571521300";
+                    var url = "https://wa.me/" + telefono + "?text=" + encodeURIComponent(mensaje);
+                    window.open(url, "_blank");
+                } else {
+                    alert("Por favor, ingresa tu nombre y selecciona al menos una opción.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
